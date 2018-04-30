@@ -18,13 +18,15 @@ The following software must available on your system:
 * [Git](https://git-scm.com/) (for installation)
 * [bioawk](https://github.com/lh3/bioawk) (for SCRIPT 01)
 * [FASTX Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/download.html) (for SCRIPT 02)
-* [Python 2.7](https://www.python.org/download/releases/2.7/) (for SCRIPTS 03,07)
+* [Python 2.7](https://www.python.org/download/releases/2.7/) (for SCRIPTS 03,07,09)
 * [IOGA](https://github.com/holmrenser/IOGA) (for SCRIPT 03)
 * [blastn](https://blast.ncbi.nlm.nih.gov/Blast.cgi) (for SCRIPT 04)
 * [bowtie2](http://bowtie-bio.sf.net/bowtie2) (for SCRIPTS 05,06)
 * [samtools](https://github.com/samtools/samtools) (for SCRIPTS 05,06)
 * [bedtools](https://github.com/arq5x/bedtools2) (for SCRIPTS 05,06)
 * [Perl 5](https://www.perl.org/) (for SCRIPT 07)
+* [trimAl](http://trimal.cgenomics.org/) (for SCRIPT 10)
+* [R 3.4](https://www.r-project.org/) (for SCRIPT 11)
 
 INSTALLATION
 ------------
