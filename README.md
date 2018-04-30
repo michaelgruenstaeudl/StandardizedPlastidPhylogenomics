@@ -2,7 +2,7 @@ Scripts for Standardized Plastid Phylogenomics
 ==============================================
 *Version: 2018.04.30, Author: Michael Gruenstaeudl*
 
-Software scripts to automate and standardize the various bioinformatic processes in plastid phylogenomics
+Software scripts to automate and standardize the basic bioinformatic processes in plastid phylogenomics
 
 
 GETTING STARTED
@@ -160,14 +160,14 @@ IRA="start_of_IRa,end_of_IRa"  # Example: IRA="134019,159487"
 bash $MYGIT/Script8.sh $INF_CPGAVAS $INF_DOGMA $FINAL_ASMBLY $IRB $IRA
 ```
 
-##### SCRIPT 9 - Foo bar baz
+##### SCRIPT 09 - Foo bar baz
 Bash script to Foo bar baz
 ```
 ## Foo bar baz
 Foo bar baz
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script9.sh Foo bar baz
+bash $MYGIT/Script09.sh Foo bar baz
 ```
 
 ##### SCRIPT 10 - Foo bar baz
