@@ -1,8 +1,8 @@
-Scripts for Assembly and Annotation of Plastid Genomes
-======================================================
-*Version: 2018.04.05, Author: Michael Gruenstaeudl*
+Scripts for Standardized Plastid Phylogenomics
+==============================================
+*Version: 2018.04.30, Author: Michael Gruenstaeudl*
 
-Software scripts to automate and standardize the assembly and annotation of complete plastid genomes from paired-end Illumina reads.
+Software scripts to automate and standardize the various bioinformatic processes in plastid phylogenomics
 
 
 GETTING STARTED
@@ -160,6 +160,36 @@ IRA="start_of_IRa,end_of_IRa"  # Example: IRA="134019,159487"
 bash $MYGIT/Script8.sh $INF_CPGAVAS $INF_DOGMA $FINAL_ASMBLY $IRB $IRA
 ```
 
+##### SCRIPT 9 - Foo bar baz
+Bash script to Foo bar baz
+```
+## Foo bar baz
+Foo bar baz
+
+## RUNNING SCRIPT
+bash $MYGIT/Script9.sh Foo bar baz
+```
+
+##### SCRIPT 10 - Foo bar baz
+Bash script to Foo bar baz
+```
+## Foo bar baz
+Foo bar baz
+
+## RUNNING SCRIPT
+bash $MYGIT/Script10.sh Foo bar baz
+```
+
+##### SCRIPT 11 - Foo bar baz
+Bash script to Foo bar baz
+```
+## Foo bar baz
+Foo bar baz
+
+## RUNNING SCRIPT
+bash $MYGIT/Script11.sh Foo bar baz
+```
+
 TEST DATA
 ---------
 Test data is available at: https://zenodo.org/record/1213269
@@ -171,6 +201,8 @@ Gruenstaeudl M., Gerschler N., Borsch T. (2018) Sharing bioinformatic workflows 
 
 CHANGELOG
 ---------
+* 2018.04.30 - Update
+   * Addition of scripts 9, 10, 11
 * 2018.04.05 - Update
    * Addition of script 7, update of script 8
 * 2018.04.04 - Update
