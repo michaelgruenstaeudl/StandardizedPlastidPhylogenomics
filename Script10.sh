@@ -9,7 +9,7 @@
 ########################################################################
 # SUPPLEMENTARY FILE 10                                                #
 # Bash script to remove gap positions and to calculate alignment       #
-# statistics from input alignment.                                     #
+# statistics from an input alignment.                                  #
 ########################################################################
 
 # Check if sufficient commandline parameters
@@ -56,11 +56,13 @@ cat $INF_ALGNM | tr '?' 'N' > $TMP_ALGNM
 ######################################
 
 echo -e "\n# Alignment statistics BEFORE gap removal" >> $LOG
+statal -in $TMP_ALGNM -sident >> $LOG
 statal -in $TMP_ALGNM -sgt >> $LOG
 
-trimal -in $TMP_ALGNM -out $OUF_ALGNM -gt 0.8 -st 0.001 -cons 60
+trimal -in $TMP_ALGNM -out $OUF_ALGNM -fasta -gt 0.8 -st 0.001 -cons 60
 
 echo -e "\n# Alignment statistics AFTER gap removal" >> $LOG
+statal -in $OUF_ALGNM -sident >> $LOG
 statal -in $OUF_ALGNM -sgt >> $LOG
 
 # File hygiene

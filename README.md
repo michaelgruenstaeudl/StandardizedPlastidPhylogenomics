@@ -175,7 +175,7 @@ python2 $MYGIT/Script09.py -i $MYWD -o $MYSAMPLE
 ```
 
 ##### SCRIPT 10 - Remove gap positions
-Bash script to remove gap positions and to calculate alignment statistics from input alignment.
+Bash script to remove gap positions and to calculate alignment statistics from an input alignment.
 ```
 ## DECLARING VARIABLES
 INF_ALGNM=$MYWD/${MYSAMPLE}_nucl_82combined.aligned.nex
@@ -186,14 +186,14 @@ bash $MYGIT/Script10.sh $INF_ALGNM $LOG
 
 ### 7. Phylogenetic inference
 
-##### SCRIPT 11 - Phylogenetic inference and tree visualization
-Bash script to Foo bar baz
+##### SCRIPT 11 - Phylogenetic inference
+R script to infer the best phylogenetic tree under the maximum likelihood criterion given a DNA alignment, and to infer node support for the best ML tree via bootstrapping.
 ```
-## Foo bar baz
-Foo bar baz
+## DECLARING VARIABLES
+FINAL_ALGNM=$MYWD/${MYSAMPLE}_nucl_82combined.aligned_gapsRemoved.fas
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script11.sh Foo bar baz
+Rscript $MYGIT/Script11.R $FINAL_ALGNM
 ```
 
 TEST DATA
