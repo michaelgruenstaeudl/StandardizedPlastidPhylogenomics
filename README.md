@@ -16,22 +16,22 @@ GETTING STARTED
 ##### Software prerequisites
 The following software must available on your system:
 * [Git](https://git-scm.com/) (for installation)
-* [bioawk](https://github.com/lh3/bioawk) (for script 1)
-* [FASTX Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/download.html) (for script 2)
-* [Python 2.7](https://www.python.org/download/releases/2.7/) (for scripts 3,7)
-* [IOGA](https://github.com/holmrenser/IOGA) (for script 3)
-* [blastn](https://blast.ncbi.nlm.nih.gov/Blast.cgi) (for script 4)
-* [bowtie2](http://bowtie-bio.sf.net/bowtie2) (for scripts 5,6)
-* [samtools](https://github.com/samtools/samtools) (for scripts 5,6)
-* [bedtools](https://github.com/arq5x/bedtools2) (for scripts 5,6)
-* [Perl 5](https://www.perl.org/) (for script 7)
+* [bioawk](https://github.com/lh3/bioawk) (for SCRIPT 01)
+* [FASTX Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/download.html) (for SCRIPT 02)
+* [Python 2.7](https://www.python.org/download/releases/2.7/) (for SCRIPTS 03,07)
+* [IOGA](https://github.com/holmrenser/IOGA) (for SCRIPT 03)
+* [blastn](https://blast.ncbi.nlm.nih.gov/Blast.cgi) (for SCRIPT 04)
+* [bowtie2](http://bowtie-bio.sf.net/bowtie2) (for SCRIPTS 05,06)
+* [samtools](https://github.com/samtools/samtools) (for SCRIPTS 05,06)
+* [bedtools](https://github.com/arq5x/bedtools2) (for SCRIPTS 05,06)
+* [Perl 5](https://www.perl.org/) (for SCRIPT 07)
 
 INSTALLATION
 ------------
 ##### Cloning this GitHub repository
 ```
 cd /path_to_git/
-git clone https://github.com/michaelgruenstaeudl/StandardizedPlastidGenomeAssemblyAnnotation.git
+git clone https://github.com/michaelgruenstaeudl/StandardizedPlastidPhylogenomics.git
 ```
 
 USAGE
@@ -41,7 +41,7 @@ USAGE
 ##### Specifying the working directory and the local Git repository
 ```
 MYWD=/path_to_infiles/
-MYGIT=/path_to_git/StandardizedPlastidGenomeAssemblyAnnotation/
+MYGIT=/path_to_git/StandardizedPlastidPhylogenomics/
 ```
 ##### Specifying sample name, reference name and FASTQ header
 ```
@@ -50,24 +50,24 @@ MYREF="Reference_name_here"  # Example: MYREF="MG720559"
 FASTQ_HEADR="controlNum_sampleNum_here"  # Example: FASTQ_HEADR="N:0:6"
 ```
 ##### Specifying and initializing LOG-file
-Adding the project name as the first line of the log-file
+Adding the project name as the first line of the log-file.
 ```
 LOG=$MYWD/${MYSAMPLE}.log
 echo "$MYSAMPLE" > $LOG
 ```
 
 ### 2. Quality filtering of reads
-##### SCRIPT 1 - Generating ordered intersection of reads
-Bash script to generate an ordered intersection of paired-end Illumina reads and to quantify the loss of reads during this process
+##### SCRIPT 01 - Generating ordered intersection of reads
+Bash script to generate an ordered intersection of paired-end Illumina reads and to quantify the loss of reads during this process.
 ```
 ## DECLARING VARIABLES
 INF1=$MYWD/${MYSAMPLE}_R1.fastq
 INF2=$MYWD/${MYSAMPLE}_R2.fastq
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script1.sh $INF1 $INF2 $LOG $FASTQ_HEADR
+bash $MYGIT/Script01.sh $INF1 $INF2 $LOG $FASTQ_HEADR
 ```
-##### SCRIPT 2 - Conducting quality filtering of reads
+##### SCRIPT 02 - Conducting quality filtering of reads
 Bash script to conduct quality filtering of Illumina reads and to quantify the loss of reads during quality filtering.
 ```
 ## DECLARING VARIABLES
@@ -75,11 +75,11 @@ INF1=$MYWD/${MYSAMPLE}_R1.intersect.fastq
 INF2=$MYWD/${MYSAMPLE}_R2.intersect.fastq
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script2.sh $INF1 $INF2 $LOG
+bash $MYGIT/Script02.sh $INF1 $INF2 $LOG
 ```
 
 ### 3. Plastid genome assembly
-##### SCRIPT 3 - Conducting the genome assembly process
+##### SCRIPT 03 - Conducting the genome assembly process
 Bash script to automate the genome assembly process and to quantify assembly success.
 ```
 ## DECLARING VARIABLES
@@ -89,23 +89,23 @@ IOGA=/path_to_IOGA/IOGA.py
 REF_DB=/path_to_reference_genomes/combined_references.fas
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script3.sh $INF1 $INF2 $LOG $IOGA $REF_DB $MYSAMPLE
+bash $MYGIT/Script03.sh $INF1 $INF2 $LOG $IOGA $REF_DB $MYSAMPLE
 ```
 ##### Manual step - Stitching of contigs to complete genome
 Recommendation: Use [Geneious](https://www.geneious.com/) for this step
 
 
 ### 4. Evaluation of assembly
-##### SCRIPT 4 - Confirming the IR boundaries
+##### SCRIPT 04 - Confirming the IR boundaries
 Bash script to automate the confirmation of IR boundaries via self-blasting.
 ```
 ## DECLARING VARIABLES
 FINAL_ASMBLY=$MYWD/${MYREF}.fasta
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script4.sh $FINAL_ASMBLY $LOG
+bash $MYGIT/Script04.sh $FINAL_ASMBLY $LOG
 ```
-##### SCRIPT 5 - Extracting reads that map to final assembly, Generating assembly statistics - part 1
+##### SCRIPT 05 - Extracting reads that map to final assembly, Generating assembly statistics - part 1
 Bash script to automatically map the quality-filtered reads against the final assembly and to extract the mapped paired reads from the quality-filtered read files. This script also compiles a series of mapping statistics to describe the mapping process.
 ```
 ## DECLARING VARIABLES
@@ -114,10 +114,10 @@ INF2=$MYWD/${MYSAMPLE}_R2.Q30filt.fastq
 FINAL_ASMBLY=$MYWD/${MYREF}.fasta
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script5.sh $INF1 $INF2 $FINAL_ASMBLY $LOG $MYSAMPLE
+bash $MYGIT/Script05.sh $INF1 $INF2 $FINAL_ASMBLY $LOG $MYSAMPLE
 ```
-##### SCRIPT 6 - Generating assembly statistics - part 2
-Bash script to automatically generate assembly quality statistics (i.e., the mean read length of mapped reads and the number of nucleotides with coverage depth equal or greater than 20, 50 and 100)
+##### SCRIPT 06 - Generating assembly statistics - part 2
+Bash script to automatically generate assembly quality statistics (i.e., the mean read length of mapped reads and the number of nucleotides with coverage depth equal or greater than 20, 50 and 100).
 ```
 ## DECLARING VARIABLES
 INF_MAPPED_R1=$MYWD/${MYSAMPLE}.MappedAgainst.${MYREF}_R1.fastq
@@ -125,7 +125,7 @@ INF_MAPPED_R2=$MYWD/${MYSAMPLE}.MappedAgainst.${MYREF}_R2.fastq
 INF_SAM=$MYWD/${MYSAMPLE}.MappedAgainst.${MYREF}.sam
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script6.sh $INF_MAPPED_R1 $INF_MAPPED_R2 $INF_SAM $LOG
+bash $MYGIT/Script06.sh $INF_MAPPED_R1 $INF_MAPPED_R2 $INF_SAM $LOG
 ```
 
 ### 5. Plastid genome annotation
@@ -135,7 +135,7 @@ bash $MYGIT/Script6.sh $INF_MAPPED_R1 $INF_MAPPED_R2 $INF_SAM $LOG
     * Note: Save the annotations of DOGMA as "Plain Text Summary"
 * Annotation server [cpGAVAS](http://www.herbalgenomics.org/cpgavas/)
 
-##### SCRIPT 7 - Convert DOGMA plain text summary to GFF
+##### SCRIPT 07 - Convert DOGMA plain text summary to GFF
 Bash script to convert the plain text summary of the annotations generated by DOGMA to a GFF file.
 ```
 ## DECLARING VARIABLES
@@ -143,11 +143,10 @@ INF=$MYWD/${MYSAMPLE}_DOGMA_Annotations_PlainTextSummary.txt
 FINAL_ASMBLY=$MYWD/${MYREF}.fasta
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script7.sh $INF $FINAL_ASMBLY
+bash $MYGIT/Script07.sh $INF $FINAL_ASMBLY
 ```
-
-##### SCRIPT 8 - Combine annotations into single set and generate union set of the annotations
-Bash script to combine the annotations produced by the annotation servers DOGMA and cpGAVAS and to generate a union set of the combined annotations
+##### SCRIPT 08 - Combine annotations into single set and generate union set of the annotations
+Bash script to combine the annotations produced by the annotation servers DOGMA and cpGAVAS and to generate a union set of the combined annotations.
 ```
 ## DECLARING VARIABLES
 INF_CPGAVAS=$MYWD/${MYSAMPLE}_cpGAVAS_Annotations.gff
@@ -157,30 +156,37 @@ IRB="start_of_IRb,end_of_IRb"  # Example: IRB="89435,114903"
 IRA="start_of_IRa,end_of_IRa"  # Example: IRA="134019,159487"
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script8.sh $INF_CPGAVAS $INF_DOGMA $FINAL_ASMBLY $IRB $IRA
+bash $MYGIT/Script08.sh $INF_CPGAVAS $INF_DOGMA $FINAL_ASMBLY $IRB $IRA
 ```
 
-##### SCRIPT 09 - Foo bar baz
-Bash script to Foo bar baz
-```
-## Foo bar baz
-Foo bar baz
+### 6. Alignment of coding regions
 
-## RUNNING SCRIPT
-bash $MYGIT/Script09.sh Foo bar baz
+##### SCRIPT 09 - Extract and align coding regions
+Python script to extract and align coding regions across a set of input genomes in GenBank format.
 ```
+## DOWNLOADING SCRIPT 'align_back_trans' OF Galaxy ToolShed
+wget https://raw.githubusercontent.com/peterjc/pico_galaxy/master/tools/align_back_trans/align_back_trans.py
 
-##### SCRIPT 10 - Foo bar baz
-Bash script to Foo bar baz
-```
-## Foo bar baz
-Foo bar baz
+## INPUT DATA
+# Save all plastid genomes for alignment into folder $MYWD
 
 ## RUNNING SCRIPT
-bash $MYGIT/Script10.sh Foo bar baz
+python2 $MYGIT/Script09.py -i $MYWD -o $MYSAMPLE
 ```
 
-##### SCRIPT 11 - Foo bar baz
+##### SCRIPT 10 - Remove gap positions
+Bash script to remove gap positions and to calculate alignment statistics from input alignment.
+```
+## DECLARING VARIABLES
+INF_ALGNM=$MYWD/${MYSAMPLE}_nucl_82combined.aligned.nex
+
+## RUNNING SCRIPT
+bash $MYGIT/Script10.sh $INF_ALGNM $LOG
+```
+
+### 7. Phylogenetic inference
+
+##### SCRIPT 11 - Phylogenetic inference and tree visualization
 Bash script to Foo bar baz
 ```
 ## Foo bar baz
@@ -202,9 +208,9 @@ Gruenstaeudl M., Gerschler N., Borsch T. (2018) Sharing bioinformatic workflows 
 CHANGELOG
 ---------
 * 2018.04.30 - Update
-   * Addition of scripts 9, 10, 11
+   * Addition of SCRIPTS 09, 10, 11
 * 2018.04.05 - Update
-   * Addition of script 7, update of script 8
+   * Addition of SCRIPT 07, update of SCRIPT 08
 * 2018.04.04 - Update
    * Update of README
 * 2018.04.03 - Update

@@ -16,14 +16,13 @@
 
 # Check if sufficient commandline parameters
 numArgmts=$#
-if [ ! $numArgmts -eq 5 ]; then
+if [ ! $numArgmts -eq 1 ]; then
     echo "ERROR | Incorrect number of commandline parameters" >&2
     exit 1
 fi
 
 # Check if input files exist
-# ${@:1:3} means only the first two input arguments
-for v in "${@:1:3}"; do
+for v in "$@"; do
 if [ ! -f "$v" ]; then
     echo "ERROR | File not found: $v" >&2
     exit 1
@@ -31,7 +30,7 @@ fi
 done
 
 # Check if dependencies exist
-DEPS=(python2.7 perl)
+DEPS=( )
 for d in "${DEPS[@]}"; do
 if ! [ -x "$(command -v $d)" ]; then
   echo "Error: $d is not installed" >&2
@@ -49,7 +48,6 @@ IRA=$5
 ################################################################################
 
 # Defining temporary files and outfiles
-
 TMP1_DOGMA=${INF_DOGMA%.gff*}.SeqnameReplaced.gff
 TMP2_DOGMA=${INF_DOGMA%.gff*}.split.
 TMP2_CPGAVAS=${INF_CPGAVAS%.gff*}.split.

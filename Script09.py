@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-''' Extract And Align Coding Regions Across Multiple Plastomes'''
+''' Python script to extract and align coding regions across a set of input genomes in GenBank format '''
 
 ###############
 # AUTHOR INFO #
@@ -7,8 +7,8 @@
 __author__ = 'Michael Gruenstaeudl, PhD'
 __contact__ = "m.gruenstaeudl@fu-berlin.de"
 __copyright__ = 'Copyright (C) 2016-2018 ' + __author__
-__info__ = 'Extract And Align Coding Regions Across Multiple Plastomes'
-__version__ = '2018.04.25.1800'
+__info__ = 'Extract and align coding regions across a set of input genomes'
+__version__ = '2018.04.30.1630'
 
 #####################
 # IMPORT OPERATIONS #
@@ -77,10 +77,10 @@ def remove_duplicates(my_dict):
         my_dict[k] = v
     #return my_dict
 
-def main(inDir, fext='.gb'):
+def main(inDir, outName, fext='.gb'):
 
     # MAKE OUTPUT FOLDER
-    outDir = os.path.join(inDir, 'output')
+    outDir = os.path.join(inDir, 'output_AlignmentFiles')
     if not os.path.exists(outDir):
         os.makedirs(outDir)
 
@@ -102,7 +102,7 @@ def main(inDir, fext='.gb'):
     # ALIGN AND WRITE TO FILE
     if masterdict_nucl.items():
         for k,v in masterdict_nucl.iteritems():
-            outFn_unalign_nucl = os.path.join(outDir, 'nucl_'+k+'.unalign.fasta')
+            outFn_unalign_nucl = os.path.join(outDir, 'nucl_'+k+'.unalign.fas')
             # Write unaligned nucleotide sequences
             with open(outFn_unalign_nucl, 'w') as hndl:
                 SeqIO.write(v, hndl, 'fasta')
@@ -111,8 +111,8 @@ def main(inDir, fext='.gb'):
 
     if masterdict_prot.items():
         for k,v in masterdict_prot.iteritems():
-            outFn_unalign_prot = os.path.join(outDir, 'prot_'+k+'.unalign.fasta')
-            outFn_aligned_prot = os.path.join(outDir, 'prot_'+k+'.aligned.fasta')
+            outFn_unalign_prot = os.path.join(outDir, 'prot_'+k+'.unalign.fas')
+            outFn_aligned_prot = os.path.join(outDir, 'prot_'+k+'.aligned.fas')
             # WRITE UNALIGNED PROTEIN SEQUENCES
             with open(outFn_unalign_prot, 'w') as hndl:
                 SeqIO.write(v, hndl, 'fasta')
@@ -129,9 +129,9 @@ def main(inDir, fext='.gb'):
     # BACK-TRANSLATION via Python script by Peter Cook
     # https://github.com/peterjc/pico_galaxy/tree/master/tools/align_back_trans
     for k,v in masterdict_prot.iteritems():
-        outFn_unalign_nucl = os.path.join(outDir, 'nucl_'+k+'.unalign.fasta')
-        outFn_aligned_nucl = os.path.join(outDir, 'nucl_'+k+'.aligned.fasta')
-        outFn_aligned_prot = os.path.join(outDir, 'prot_'+k+'.aligned.fasta')
+        outFn_unalign_nucl = os.path.join(outDir, 'nucl_'+k+'.unalign.fas')
+        outFn_aligned_nucl = os.path.join(outDir, 'nucl_'+k+'.aligned.fas')
+        outFn_aligned_prot = os.path.join(outDir, 'prot_'+k+'.aligned.fas')
         try:
             log = subprocess.check_output(['python2', 'align_back_trans.py', 'fasta', outFn_aligned_prot, outFn_unalign_nucl, outFn_aligned_nucl, '11'], stderr=subprocess.STDOUT)
         except:
@@ -141,8 +141,8 @@ def main(inDir, fext='.gb'):
     # IMPORT BACK-TRANSLATIONS AND CONCATENATE
     alignm_L = []
     for k in masterdict_prot.keys():
-        aligned_nucl_fasta = os.path.join(outDir, 'nucl_'+k+'.aligned.fasta')
-        aligned_nucl_nexus = os.path.join(outDir, 'nucl_'+k+'.aligned.nexus')
+        aligned_nucl_fasta = os.path.join(outDir, 'nucl_'+k+'.aligned.fas')
+        aligned_nucl_nexus = os.path.join(outDir, 'nucl_'+k+'.aligned.nex')
         # Convert from fasta to nexus
         try:
             alignm_fasta = AlignIO.read(aligned_nucl_fasta, 'fasta', alphabet=Alphabet.generic_dna)
@@ -158,10 +158,10 @@ def main(inDir, fext='.gb'):
     # COMBINE THE NEXUS ALIGNMENTS (IN NO PARTICULAR ORDER)
     n_aligned_CDS = len(alignm_L)
     alignm_combined = Nexus.combine(alignm_L) # Function 'Nexus.combine' needs a tuple.
-    outFn_nucl_combined_fasta = os.path.join(outDir, 'nucl_'+str(n_aligned_CDS)+'combined.aligned.fasta')
-    outFn_nucl_combined_nexus = os.path.join(outDir, 'nucl_'+str(n_aligned_CDS)+'combined.aligned.nexus')
+    outFn_nucl_combined_nexus = os.path.join(inDir, outName+'_nucl_'+str(n_aligned_CDS)+'combined.aligned.nex')
     alignm_combined.write_nexus_data(filename=open(outFn_nucl_combined_nexus, 'w'))
-    AlignIO.convert(outFn_nucl_combined_nexus, 'nexus', outFn_nucl_combined_fasta, 'fasta')
+    #outFn_nucl_combined_fasta = os.path.join(outDir, outName+'_nucl_'+str(n_aligned_CDS)+'combined.aligned.fas')
+    #AlignIO.convert(outFn_nucl_combined_nexus, 'nexus', outFn_nucl_combined_fasta, 'fasta')
     
 ############
 # ARGPARSE #
@@ -175,6 +175,12 @@ if __name__ == '__main__':
                         '--inp',
                         help='relative path to input directory; contains GenBank files; Example: /path_to_input/',
                         default='/home/username/Desktop/',
+                        required=True)
+
+    parser.add_argument('-o',
+                        '--oup',
+                        help='sample name used for outfile; Example: `my_sample`',
+                        default='my_sample',
                         required=True)
 
     # Optional
@@ -194,4 +200,4 @@ if __name__ == '__main__':
 ########
 # MAIN #
 ########
-    main(args.inp, args.fext)
+    main(args.inp, args.oup, args.fext)
