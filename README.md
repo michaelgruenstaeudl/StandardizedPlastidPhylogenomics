@@ -184,9 +184,9 @@ INF_ALGNM=$MYWD/${MYSAMPLE}_nucl_82combined.aligned.nex
 bash $MYGIT/Script10.sh $INF_ALGNM $LOG
 ```
 
-### 7. Phylogenetic inference
+### 7. Phylogenetic analysis
 
-##### SCRIPT 11 - Phylogenetic inference
+##### SCRIPT 11 - Phylogenetic tree inference under ML, including bootstrapping
 R script to infer the best phylogenetic tree under the maximum likelihood criterion given a DNA alignment, and to infer node support for the best ML tree via bootstrapping.
 ```
 ## DECLARING VARIABLES
