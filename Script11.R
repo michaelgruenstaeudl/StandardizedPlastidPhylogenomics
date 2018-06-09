@@ -3,7 +3,7 @@
 # AUTHOR="Michael Gruenstaeudl, PhD"
 # COPYRIGHT="Copyright (C) 2016-2018 $AUTHOR"
 # CONTACT="m.gruenstaeudl@fu-berlin.de"
-# VERSION="2018.04.30.2000"
+# VERSION="2018.06.09.1500"
 # USAGE="R Script11.R $FINAL_ALGNM"
 
 ########################################################################
@@ -53,13 +53,19 @@ find_max_lik_tree = function(alignm, nuclsubmodel) {
     #fitBest = optim.pml(fitStart, model=model, optInv=optInv, optGamma=optGamma, rearrangement='stochastic')
     fitBest = optim.pml(fitStart, model=model, optInv=optInv, optGamma=optGamma, rearrangement='NNI')
     # Apply bootstrap to evaluate how well the nodes of the trees are supported
-    BSvalues = bootstrap.pml(fitBest, bs=100, optNni=TRUE, multicore=TRUE)
+    BSvalues = bootstrap.pml(fitBest, bs=1000, optNni=TRUE, multicore=TRUE)
     # Plot most likely tree with bootstrap values
     #BestMLtree_withBSvalues = plotBS(fitBest$tree, BSvalues, p = 50, type="p")
     BestMLtree_withBSvalues = plotBS(fitBest$tree, BSvalues, p = 50, type="u")
 
+    # Prepare output
+    output = list()
+    output[["tree"]] = BestMLtree_withBSvalues
+    output[["lnL"]] = fitBest$logLik
+    output[["g"]] = fitBest$g
+    output[["inv"]] = fitBest$inv
     # Return output
-    return(BestMLtree_withBSvalues)
+    return(output)
 }
 
 ########
@@ -83,17 +89,26 @@ nuclsubmodel = "GTR+I+G"
 alignm = read.phyDat(inFile, format='fasta', type='DNA')
 
 # INFER BEST ML TREE
-tree = tryCatch( # NOTE: A certain stochasiticity is underlying the ML tree inference, which is why it sometimes fails and requires a tryCatch.
+output = tryCatch( # NOTE: A certain stochasiticity is underlying the ML tree inference, which is why it sometimes fails and requires a tryCatch.
     expr = find_max_lik_tree(alignm, nuclsubmodel),
     error = function(e) {cat('FAIL\n'); return(NULL)}
     )
 
 # SAVE TREES TO FILE
-write.tree(tree, file=outFile_tre)
+write.tree(output$tree, file=outFile_tre)
 
-# PLOT ML TREES
+# PREPARE TREE STATS
+lnL_value = paste("logLike value:", output$lnL)
+gamma_value = paste("Gamma value:", output$g)
+invSites_value = paste("InvSites value:", output$i)
+
+# PLOT ML TREE WITH BS-VALUES AND SCALEBAR
 svglite(outFile_svg, standalone=TRUE)
-plotBS(tree)
+plotBS(output$tree)
+# Add scalebar
+add.scale.bar()
+# Add tree stats
+text(x=0, y=0, pos=1, labels=c(lnL_value, gamma_value, invSites_value))
 dev.off()
 
 
