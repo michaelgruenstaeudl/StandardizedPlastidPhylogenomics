@@ -16,7 +16,7 @@
 
 # Check if sufficient commandline parameters
 numArgmts=$#
-if [ ! $numArgmts -eq 1 ]; then
+if [ ! $numArgmts -eq 5 ]; then
     echo "ERROR | Incorrect number of commandline parameters" >&2
     exit 1
 fi
