@@ -22,7 +22,8 @@ if [ ! $numArgmts -eq 5 ]; then
 fi
 
 # Check if input files exist
-for v in "$@"; do
+# ${@:1:3} means all input arguments except fourth and fifth one
+for v in "${@:1:3}"; do
 if [ ! -f "$v" ]; then
     echo "ERROR | File not found: $v" >&2
     exit 1
