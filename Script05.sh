@@ -55,7 +55,7 @@ SAMPLE=$5
 REF_BASE=$(basename $FINAL_ASMBLY)
 REF_FN=${REF_BASE%.fasta*}
 OUT_STEM=${SAMPLE}.MappedAgainst.${REF_FN}
-OUT1_FLE=${OUT_STEM}.sam
+OUT1_FLE=${OUT_STEM}.bam
 OUT1_STAT1=${OUT_STEM}.part1.stats
 OUT1_STAT2=${OUT_STEM}.part2.stats
 
@@ -64,7 +64,7 @@ mkdir -p db
 bowtie2-build $REF_BASE db/$REF_FN > ${OUT_STEM}.refdb.log
 
 # Mapping reads with bowtie2
-bowtie2 -x db/$REF_FN -1 $INF1 -2 $INF2 -S $OUT1_FLE 2>> $OUT1_STAT1
+bowtie2 -x db/$REF_FN -1 $INF1 -2 $INF2 2>> $OUT1_STAT1 | samtools view -bS - > $OUT1_FLE
 
 # Extracting mapping statistics
 samtools flagstat $OUT1_FLE >> $OUT1_STAT2
@@ -74,8 +74,8 @@ samtools flagstat $OUT1_FLE >> $OUT1_STAT2
 ## Extracting successfully mapped pairs
 
 # Defining temporary files and outfiles
-TMP1=${OUT_STEM}.extracted.sam
-TMP2=${OUT_STEM}.sorted.sam
+TMP1=${OUT_STEM}.extracted.bam
+TMP2=${OUT_STEM}.sorted.bam
 OUT2_FLE=${OUT_STEM}.fastq
 
 # Extracting only paired mapped reads

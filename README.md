@@ -4,6 +4,12 @@ Scripts for Standardized Plastid Phylogenomics
 
 Software scripts to automate and standardize the basic bioinformatic processes in plastid phylogenomics
 
+CITATION
+--------
+If you use this software, please cite:
+
+Gruenstaeudl M, Gerschler N, Borsch T. Bioinformatic Workflows for Generating Complete Plastid Genome Sequences—An Example from Cabomba (Cabombaceae) in the Context of the Phylogenomic Analysis of the Water-Lily Clade. Life. 2018; 8(3):25. [https://doi.org/10.3390/life8030025](https://doi.org/10.3390/life8030025)
+
 
 GETTING STARTED
 ---------------
@@ -201,10 +207,6 @@ Rscript $MYGIT/Script11.R $FINAL_ALGNM
 TEST DATA
 ---------
 Test data is available at: https://zenodo.org/record/1213269
-
-CITATION
---------
-Gruenstaeudl M., Gerschler N., Borsch T. (2018) Sharing bioinformatic workflows for plastid genomics - An example from the sequencing of complete plastid genomes of *Cabomba* (Cabombaceae). In Review.
 
 
 CHANGELOG
